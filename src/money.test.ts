@@ -1,4 +1,4 @@
-import { doller, franc, times } from './money'
+import { doller, franc, times, plus } from './money'
 
 describe('Money', () => {
   it('test multiplication', () => {
@@ -10,6 +10,10 @@ describe('Money', () => {
     const five = franc(5)
     expect(times(five, 2)).toEqual(franc(10))
     expect(times(five, 3)).toEqual(franc(15))
+  })
+  it('test simple addition', () => {
+    const sum = plus(doller(5), doller(5))
+    expect(sum).toEqual(doller(10))
   })
   it('equality', () => {
     expect(doller(5)).toEqual(doller(5))
