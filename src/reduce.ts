@@ -1,4 +1,5 @@
-import { type Currency, type Expression, type Money, money } from './money'
+import { type Currency, type Money, money } from './money'
+import { type Expression } from './expression'
 import { type Exchange } from './exchange'
 
 type Reduce = <T extends Currency>(exp: Expression, currency: T) => Money<T>

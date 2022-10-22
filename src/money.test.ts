@@ -1,4 +1,5 @@
-import { money, times, plus } from './money'
+import { money } from './money'
+import { times, plus } from './expression'
 import { toExchange } from './exchange'
 import { getReducer } from './reduce'
 
