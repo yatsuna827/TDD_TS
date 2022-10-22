@@ -25,13 +25,24 @@ export const plus = (first: Expression, ...rest: [Expression, ...Expression[]]):
   return r.length == 0 ? s : plus(s, ...(r as [Expression, ...Expression[]])) // これはTSの推論力不足を補うための仕方のないas
 }
 
-export const reduce = <T extends Currency>(exp: Expression, currency: T): Money<T> => {
+type Rates = Record<`${Currency}:${Currency}`, number>
+type Exchanger = <T extends Currency>(from: Money<Currency>, to: T) => Money<T>
+export const getExchanger = (rates: Rates): Exchanger => {
+  return (from, to) => {
+    if (from.currency === to) return money(from.amount, to)
+
+    const rate = rates[`${from.currency}:${to}`]
+    return money(from.amount / rate, to)
+  }
+}
+
+export const reduce = <T extends Currency>(exp: Expression, currency: T, exchange: Exchanger): Money<T> => {
   if (exp.__tag == 'Money') {
-    return { ...exp, currency }
+    return exchange(exp, currency)
   } else {
     const { augend, addend } = exp
-    const { amount: a } = reduce(augend, currency)
-    const { amount: b } = reduce(addend, currency)
+    const { amount: a } = reduce(augend, currency, exchange)
+    const { amount: b } = reduce(addend, currency, exchange)
 
     return money(a + b, currency)
   }
