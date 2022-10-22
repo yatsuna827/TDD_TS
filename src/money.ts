@@ -26,9 +26,9 @@ export const plus = (first: Expression, ...rest: [Expression, ...Expression[]]):
 }
 
 type Rates = Record<`${Currency}:${Currency}`, number>
-type Exchanger = <T extends Currency>(from: Money<Currency>, to: T) => Money<T>
-export const getExchanger = (rates: Rates): Exchanger => {
-  return (from, to) => {
+type Exchange = <T extends Currency>(from: Money<Currency>, to: T) => Money<T>
+export const toExchange = (rates: Rates): Exchange => {
+  return <T extends Currency>(from: Money<Currency>, to: T) => {
     if (from.currency === to) return money(from.amount, to)
 
     const rate = rates[`${from.currency}:${to}`]
@@ -36,7 +36,19 @@ export const getExchanger = (rates: Rates): Exchanger => {
   }
 }
 
-export const reduce = <T extends Currency>(exp: Expression, currency: T, exchange: Exchanger): Money<T> => {
+type Reduce = <T extends Currency>(exp: Expression, currency: T) => Money<T>
+type Reducer = {
+  reduce: Reduce
+}
+export const getReducer = (exchange: Exchange): Reducer => {
+  const r: Reduce = (exp, currency) => reduce(exp, currency, exchange)
+
+  return {
+    reduce: r,
+  }
+}
+
+const reduce = <T extends Currency>(exp: Expression, currency: T, exchange: Exchange): Money<T> => {
   if (exp.__tag == 'Money') {
     return exchange(exp, currency)
   } else {
