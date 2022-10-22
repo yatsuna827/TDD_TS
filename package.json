@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "lint:tsc": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest --coverage=false"
   },
   "author": "",
   "license": "ISC",
