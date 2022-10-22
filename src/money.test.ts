@@ -1,4 +1,4 @@
-import { doller, franc, times, plus } from './money'
+import { money, times, plus } from './money'
 import { toExchange } from './exchange'
 import { getReducer } from './reduce'
 
@@ -13,38 +13,38 @@ describe('Money', () => {
   )
 
   it('test multiplication', () => {
-    const five = doller(5)
-    expect(times(five, 2)).toEqual(doller(10))
-    expect(times(five, 3)).toEqual(doller(15))
+    const five = money(5, 'USD')
+    expect(times(five, 2)).toEqual(money(10, 'USD'))
+    expect(times(five, 3)).toEqual(money(15, 'USD'))
   })
   it('test Franc multiplication', () => {
-    const five = franc(5)
-    expect(times(five, 2)).toEqual(franc(10))
-    expect(times(five, 3)).toEqual(franc(15))
+    const five = money(5, 'CHF')
+    expect(times(five, 2)).toEqual(money(10, 'CHF'))
+    expect(times(five, 3)).toEqual(money(15, 'CHF'))
   })
   it('test simple addition', () => {
-    const sum = plus(doller(5), doller(5))
+    const sum = plus(money(5, 'USD'), money(5, 'USD'))
     const reduced = reduce(sum, 'USD')
-    expect(reduced).toEqual(doller(10))
+    expect(reduced).toEqual(money(10, 'USD'))
   })
   it('test multiple addition', () => {
-    const sum = plus(doller(5), doller(6), doller(7))
+    const sum = plus(money(5, 'USD'), money(6, 'USD'), money(7, 'USD'))
     const reduced = reduce(sum, 'USD')
-    expect(reduced).toEqual(doller(18))
+    expect(reduced).toEqual(money(18, 'USD'))
   })
   it('reduce money', () => {
-    const reduced = reduce(doller(1), 'USD')
-    expect(reduced).toEqual(doller(1))
+    const reduced = reduce(money(1, 'USD'), 'USD')
+    expect(reduced).toEqual(money(1, 'USD'))
   })
   it('reduce money different currency', () => {
-    const reduced = reduce(franc(2), 'USD')
-    expect(reduced).toEqual(doller(1))
+    const reduced = reduce(money(2, 'CHF'), 'USD')
+    expect(reduced).toEqual(money(1, 'USD'))
   })
   it('equality', () => {
-    expect(doller(5)).toEqual(doller(5))
-    expect(doller(5)).not.toEqual(doller(6))
-    expect(franc(5)).toEqual(franc(5))
-    expect(franc(5)).not.toEqual(franc(6))
-    expect(franc(5)).not.toEqual(doller(5))
+    expect(money(5, 'USD')).toEqual(money(5, 'USD'))
+    expect(money(5, 'USD')).not.toEqual(money(6, 'USD'))
+    expect(money(5, 'CHF')).toEqual(money(5, 'CHF'))
+    expect(money(5, 'CHF')).not.toEqual(money(6, 'CHF'))
+    expect(money(5, 'CHF')).not.toEqual(money(5, 'USD'))
   })
 })
