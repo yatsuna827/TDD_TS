@@ -16,5 +16,6 @@ describe('Money', () => {
     expect(doller(5)).not.toEqual(doller(6))
     expect(franc(5)).toEqual(franc(5))
     expect(franc(5)).not.toEqual(franc(6))
+    expect(franc(5)).not.toEqual(doller(5))
   })
 })
