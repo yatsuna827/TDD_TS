@@ -1,4 +1,6 @@
-import { doller, franc, times, plus, toExchange, getReducer } from './money'
+import { doller, franc, times, plus } from './money'
+import { toExchange } from './exchange'
+import { getReducer } from './reduce'
 
 describe('Money', () => {
   const { reduce } = getReducer(
