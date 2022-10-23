@@ -1,5 +1,5 @@
 import { money, type Money } from './money'
-import { times, plus, add, Sum, Expression } from './expression'
+import { times, plus, add, type Expression } from './expression'
 import { toExchange } from './exchange'
 import { getReducer } from './reduce'
 
@@ -32,7 +32,7 @@ describe('Money', () => {
     expect(sum).toEqual(money(10, 'USD'))
   })
   it('test multiple addition', () => {
-    const sum: Sum = plus(money(5, 'USD'), money(6, 'USD'), money(7, 'USD'))
+    const sum: Expression = plus(money(5, 'USD'), money(6, 'USD'), money(7, 'USD'))
     const reduced = reduce(sum, 'USD')
     expect(reduced).toEqual(money(18, 'USD'))
   })
